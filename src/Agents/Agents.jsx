@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const baseUrl = import.meta.env.VITE_BASE_URL ;
+
+
 export function Agents() {
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchData = () => {
     setLoading(true);
-    axios.get("http://localhost:8080/valorant/getAgents/true")
+    axios.get(`${baseUrl}getAgents/true`) // Using the base URL
       .then(response => {
         console.log("API Response:", response.data);
         if (response.data && response.data.data) {
