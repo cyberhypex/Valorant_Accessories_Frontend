@@ -9,7 +9,7 @@ export function Agents() {
     setLoading(true);
     axios.get("http://localhost:8080/valorant/getAgents/true")
       .then(response => {
-        console.log("API Response:", response.data); // Debugging
+        console.log("API Response:", response.data);
         if (response.data && response.data.data) {
           setAgents(response.data.data);
         } else {
@@ -22,64 +22,51 @@ export function Agents() {
 
   useEffect(() => {
     console.log("Agents state updated:", agents);
-  }, [agents]); // Logs when agents state updates
+  }, [agents]);
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <button onClick={fetchData} disabled={loading} style={{ margin: '20px', padding: '10px 20px', fontSize: '16px' }}>
+    <div className="text-center container mt-4">
+      <button 
+        onClick={fetchData} 
+        disabled={loading} 
+        className="btn btn-primary mb-4"
+      >
         {loading ? "Loading..." : "Fetch Agents"}
       </button>
-
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-
+      
+      <div className="row justify-content-center">
         {agents.map((agent, index) => (
-          <div key={index} style={{
-            width: '300px',
-            margin: '20px',
-            padding: '15px',
-            borderRadius: '10px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-            backgroundColor: '#f9f9f9',
-            textAlign: 'center'
-          }}>
-            {/* Debug: Log Agent Name */}
-            {console.log("Rendering Agent:", agent.displayName)}
-
-            {/* Agent Name */}
-            <h2>{agent.displayName ? agent.displayName : "Unknown Agent"}</h2>
-
-            {/* Agent Image (Check if Available) */}
-            {agent.displayIcon ? (
-              <img src={agent.displayIcon} alt={agent.displayName || "Agent"} width="150" style={{ borderRadius: '10px' }} />
-            ) : (
-              <p>No Image Available</p>
-            )}
-
-            {/* Agent Description */}
-            <p style={{ fontSize: '14px', color: '#555' }}>{agent.description || "No description available."}</p>
-
-            {/* Agent Role */}
-            {agent.role ? (
-              <p><strong>Role:</strong> {agent.role.displayName}</p>
-            ) : (
-              <p><strong>Role:</strong> Not Available</p>
-            )}
-
-            {/* Agent Abilities */}
-            {agent.abilities && agent.abilities.length > 0 ? (
-              <div>
-                <strong>Abilities:</strong>
-                <ul style={{ listStyleType: 'none', padding: 0 }}>
-                  {agent.abilities.map((ability, i) => (
-                    <li key={i} style={{ fontSize: '12px', color: '#777' }}>
-                      {ability.displayName}: {ability.description}
-                    </li>
-                  ))}
-                </ul>
+          <div key={index} className="col-md-4 mb-4">
+            <div className="card shadow-lg border-0 h-100">
+              {console.log("Rendering Agent:", agent.displayName)}
+              <div className="card-body text-center">
+                <h5 className="card-title fw-bold text-decoration-underline">
+                  {agent.displayName ? agent.displayName : "Unknown Agent"}
+                </h5>
+                {agent.displayIcon ? (
+                  <img src={agent.displayIcon} alt={agent.displayName || "Agent"} 
+                    className="img-fluid rounded" style={{ maxWidth: '150px' }} />
+                ) : (
+                  <p className="text-muted">No Image Available</p>
+                )}
+                <p className="text-muted small mt-2">{agent.description || "No description available."}</p>
+                <p><strong>Role:</strong> {agent.role ? agent.role.displayName : "Not Available"}</p>
+                {agent.abilities && agent.abilities.length > 0 ? (
+                  <div>
+                    <strong>Abilities:</strong>
+                    <ul className="list-unstyled text-muted small">
+                      {agent.abilities.map((ability, i) => (
+                        <li key={i}>
+                          {ability.displayName}: {ability.description}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <p className="text-muted small">No Abilities Available</p>
+                )}
               </div>
-            ) : (
-              <p>No Abilities Available</p>
-            )}
+            </div>
           </div>
         ))}
       </div>

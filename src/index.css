@@ -12,6 +12,65 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+body {
+  background: url('./assets/landingImage.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.5); /* Adds dark overlay instead of reducing opacity */
+}
+
+.landing-page {
+  background: none;
+}
+/* Game-themed navbar styles */
+.navbar {
+  font-family: 'Orbitron', sans-serif; /* Futuristic gaming font */
+}
+
+.nav-link {
+  font-weight: bold;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ff4500 !important; /* Fiery red */
+  transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #ffffff !important;
+  transform: scale(1.1);
+}
+
+/* Ensure navbar links are centered on mobile */
+@media (max-width: 991px) {
+  .navbar-collapse {
+      background: rgba(0, 0, 0, 0.9);
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      padding: 20px 0;
+  }
+
+  .navbar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+  }
+
+  .nav-link {
+      font-size: 1.5rem;
+  }
+}
+
+/* Remove border from hamburger */
+.navbar-toggler {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+
 
 a {
   font-weight: 500;
