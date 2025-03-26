@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import api from "../AxiosInstance";  // Import the custom instance
+import api from "../AxiosInstance";  
 
 export function Agents() {
   const [agents, setAgents] = useState([]);
@@ -8,7 +8,7 @@ export function Agents() {
   const fetchData = () => {
     setLoading(true);
     api
-      .get("getAgents/true") // Only change the endpoint
+      .get("getAgents/true")
       .then((response) => {
         if (response.data && response.data.data) {
           setAgents(response.data.data);
@@ -20,42 +20,122 @@ export function Agents() {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => {
-    console.log("Agents state updated:", agents);
-  }, [agents]);
+
 
   return (
     <div className="text-center container mt-4">
-      <button onClick={fetchData} disabled={loading} className="btn btn-primary mb-4">
+      <button
+        onClick={fetchData}
+        disabled={loading}
+        className="btn btn-primary mb-4"
+      >
         {loading ? "Loading..." : "Fetch Agents"}
       </button>
+
       <div className="row justify-content-center">
         {agents.map((agent, index) => (
           <div key={index} className="col-md-4 mb-4">
-            <div className="card shadow-lg border-0 h-100">
+            <div
+              className="card shadow-lg border-0 h-100"
+              style={{
+                background: "rgba(0, 0, 0, 0.7)", 
+                color: "#f8f9fa",
+                transition: "transform 0.3s, box-shadow 0.3s",
+                borderRadius: "15px",
+                overflow: "hidden",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.5)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "0 5px 10px rgba(0,0,0,0.2)";
+              }}
+            >
               <div className="card-body text-center">
-                <h5 className="card-title fw-bold text-decoration-underline">
+                <h4
+                  className="card-title fw-bold"
+                  style={{
+                    color: "#f39c12",
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    textShadow: "2px 2px 5px rgba(0, 0, 0, 0.8)",  // Shadow added
+                  }}
+                >
                   {agent.displayName || "Unknown Agent"}
-                </h5>
+                </h4>
+
                 {agent.displayIcon ? (
-                  <img src={agent.displayIcon} alt={agent.displayName || "Agent"} 
-                    className="img-fluid rounded" style={{ maxWidth: "150px" }} />
+                  <img
+                    src={agent.displayIcon}
+                    alt={agent.displayName || "Agent"}
+                    className="img-fluid rounded-circle mt-3"
+                    style={{ 
+                      maxWidth: "130px", 
+                      border: "3px solid #f39c12",
+                      boxShadow: "0 5px 15px rgba(0, 0, 0, 0.7)"  // Added shadow to image
+                    }}
+                  />
                 ) : (
                   <p className="text-muted">No Image Available</p>
                 )}
-                <p className="text-muted small mt-2">{agent.description || "No description available."}</p>
-                <p><strong>Role:</strong> {agent.role ? agent.role.displayName : "Not Available"}</p>
+
+                <p
+                  className="mt-3"
+                  style={{
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    color: "#3498db",
+                    textShadow: "1px 1px 3px rgba(0, 0, 0, 0.5)",  // Shadow for role
+                  }}
+                >
+                  <strong>Role:</strong>{" "}
+                  <span style={{ color: "#e74c3c", fontStyle: "italic" }}>
+                    {agent.role ? agent.role.displayName : "Not Available"}
+                  </span>
+                </p>
+
                 {agent.abilities?.length > 0 ? (
-                  <div>
-                    <strong>Abilities:</strong>
-                    <ul className="list-unstyled text-muted small">
+                  <div className="mt-3">
+                    <strong
+                      style={{
+                        fontSize: "1.2rem",
+                        color: "#2ecc71",
+                        textTransform: "uppercase",
+                        textShadow: "1px 1px 3px rgba(0, 0, 0, 0.6)",  // Shadow for abilities header
+                      }}
+                    >
+                      Abilities:
+                    </strong>
+                    <ul
+                      className="list-unstyled mt-2"
+                      style={{ fontSize: "0.95rem", lineHeight: "1.8" }}
+                    >
                       {agent.abilities.map((ability, i) => (
-                        <li key={i}>{ability.displayName}: {ability.description}</li>
+                        <li
+                          key={i}
+                          style={{
+                            textShadow: "1px 1px 4px rgba(0, 0, 0, 0.6)",  // Shadow for abilities
+                          }}
+                        >
+                          <span
+                            style={{ color: "#f1c40f", fontWeight: "bold" }}
+                          >
+                            {ability.displayName}:
+                          </span>{" "}
+                          {ability.description}
+                        </li>
                       ))}
                     </ul>
                   </div>
                 ) : (
-                  <p className="text-muted small">No Abilities Available</p>
+                  <p
+                    className="text-muted small"
+                    style={{ textShadow: "1px 1px 3px rgba(0, 0, 0, 0.4)" }}
+                  >
+                    No Abilities Available
+                  </p>
                 )}
               </div>
             </div>
