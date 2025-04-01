@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
-import api from "../AxiosInstance";  
+import React, { useState } from "react";
+import api from "../AxiosInstance";
 
 export function Agents() {
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const fetchData = () => {
     setLoading(true);
+    setError("");
     api
       .get("getAgents/true")
       .then((response) => {
@@ -14,13 +16,15 @@ export function Agents() {
           setAgents(response.data.data);
         } else {
           console.error("Unexpected response format:", response.data);
+          setError("Unexpected response format 😢");
         }
       })
-      .catch((error) => console.error("Error fetching data", error))
+      .catch((error) => {
+        console.error("Error fetching data", error);
+        setError("Failed to fetch agents. Please try again later 😢");
+      })
       .finally(() => setLoading(false));
   };
-
-
 
   return (
     <div className="text-center container mt-4">
@@ -31,14 +35,16 @@ export function Agents() {
       >
         {loading ? "Loading..." : "Fetch Agents"}
       </button>
-
+      
+      {error && <p className="text-danger fw-bold">{error}</p>}
+      
       <div className="row justify-content-center">
         {agents.map((agent, index) => (
           <div key={index} className="col-md-4 mb-4">
             <div
               className="card shadow-lg border-0 h-100"
               style={{
-                background: "rgba(0, 0, 0, 0.7)", 
+                background: "rgba(0, 0, 0, 0.7)",
                 color: "#f8f9fa",
                 transition: "transform 0.3s, box-shadow 0.3s",
                 borderRadius: "15px",
@@ -60,7 +66,7 @@ export function Agents() {
                     color: "#f39c12",
                     textTransform: "uppercase",
                     letterSpacing: "1px",
-                    textShadow: "2px 2px 5px rgba(0, 0, 0, 0.8)",  // Shadow added
+                    textShadow: "2px 2px 5px rgba(0, 0, 0, 0.8)",
                   }}
                 >
                   {agent.displayName || "Unknown Agent"}
@@ -71,10 +77,10 @@ export function Agents() {
                     src={agent.displayIcon}
                     alt={agent.displayName || "Agent"}
                     className="img-fluid rounded-circle mt-3"
-                    style={{ 
-                      maxWidth: "130px", 
+                    style={{
+                      maxWidth: "130px",
                       border: "3px solid #f39c12",
-                      boxShadow: "0 5px 15px rgba(0, 0, 0, 0.7)"  // Added shadow to image
+                      boxShadow: "0 5px 15px rgba(0, 0, 0, 0.7)",
                     }}
                   />
                 ) : (
@@ -87,7 +93,7 @@ export function Agents() {
                     fontSize: "1.1rem",
                     fontWeight: "500",
                     color: "#3498db",
-                    textShadow: "1px 1px 3px rgba(0, 0, 0, 0.5)",  // Shadow for role
+                    textShadow: "1px 1px 3px rgba(0, 0, 0, 0.5)",
                   }}
                 >
                   <strong>Role:</strong>{" "}
@@ -103,7 +109,7 @@ export function Agents() {
                         fontSize: "1.2rem",
                         color: "#2ecc71",
                         textTransform: "uppercase",
-                        textShadow: "1px 1px 3px rgba(0, 0, 0, 0.6)",  // Shadow for abilities header
+                        textShadow: "1px 1px 3px rgba(0, 0, 0, 0.6)",
                       }}
                     >
                       Abilities:
@@ -116,7 +122,7 @@ export function Agents() {
                         <li
                           key={i}
                           style={{
-                            textShadow: "1px 1px 4px rgba(0, 0, 0, 0.6)",  // Shadow for abilities
+                            textShadow: "1px 1px 4px rgba(0, 0, 0, 0.6)",
                           }}
                         >
                           <span

@@ -4,9 +4,11 @@ import api from "../AxiosInstance";
 export default function Maps() {
   const [maps, setMaps] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error,setError]=useState("");
 
   const fetchMaps = () => {
     setLoading(true);
+    setError("");
     api
       .get("/getMaps")
       .then((response) => {
@@ -18,9 +20,13 @@ export default function Maps() {
           setMaps(uniqueMaps);
         } else {
           console.error("Unexpected response format:", response.data);
+          setError("Unexpected response format 😢");
         }
       })
-      .catch((error) => console.error("Error fetching data", error))
+      .catch((error) => {
+        console.error("Error fetching data", error);
+        setError("Failed to fetch agents. Please try again later 😢");
+      })
       .finally(() => setLoading(false));
   };
 
@@ -33,6 +39,8 @@ export default function Maps() {
       >
         {loading ? "Loading..." : "Fetch Maps"}
       </button>
+
+      {error && <p className="text-danger fw-bold">{error}</p>}
 
       <div className="row justify-content-center">
         {maps.map((map, index) => (
