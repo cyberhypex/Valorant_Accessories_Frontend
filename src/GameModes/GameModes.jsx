@@ -1,66 +1,91 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
+import api from '../AxiosInstance';
+import li from '../assets/landingImage.jpg';
 
 export function GameModes() {
-  const [gameModes, setGameModes] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+    const [gameModes, setGameModes] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-  const fetchGameModes = () => {
-    setLoading(true);
-    setError(null);
-    axios
-      .get("https://valorant-api.com/v1/gamemodes")
-      .then((response) => {
-        if (response.data && response.data.data) {
-          setGameModes(response.data.data);
-        } else {
-          throw new Error("Unexpected API response format");
-        }
-      })
-      .catch(() => setError("Failed to fetch game modes 😞"))
-      .finally(() => setLoading(false));
-  };
+    const fetchGameModes = () => {
+        setLoading(true);
+        setError("");
 
-  return (
-    <div className="container mx-auto mt-8 p-4 text-center">
-      <h2 className="text-3xl font-bold text-gray-200 mb-6">Game Modes</h2>
-      
-      <button 
-        onClick={fetchGameModes} 
-        disabled={loading} 
-        className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-md disabled:opacity-50 mb-6"
-      >
-        {loading ? "Loading..." : "Fetch Game Modes"}
-      </button>
+        api.get("/getGameModes")
+            .then((response) => {
+                if (response.data && response.data.data) {
+                    setGameModes(response.data.data);
+                } else {
+                    console.error("Error fetching data", response);
+                    setError("Unexpected response format 😢");
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching", error);
+                setError("Failed to fetch game modes, try again later 🥲");
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
 
-      {error && <p className="text-red-500 font-bold">{error}</p>}
-
-      <div className="flex flex-wrap justify-center gap-8">
-        {gameModes.map((mode) => (
-          <div
-            key={mode.uuid}
-            className="card h-100 shadow-lg border-0 bg-gray-900 rounded-xl overflow-hidden border-gray-700 text-white transform transition-transform hover:scale-105 hover:shadow-xl flex flex-col items-center p-6"
-          >
-            {/* Image Section */}
-            <div className="bg-gray-800 p-4 flex justify-center w-full">
-              <img
-                src={mode.listViewIconTall || "https://via.placeholder.com/150"}
-                alt={mode.displayName}
-                className="w-32 h-32 object-cover rounded-full border-4 border-gray-700 shadow-md"
-              />
+    return (
+        <>
+            <div className="text-center container mt-4">
+                <button
+                    onClick={fetchGameModes}
+                    disabled={loading}
+                    className="btn btn-primary mb-4"
+                >
+                    {loading ? "Loading.." : "Fetch Game Modes"}
+                </button>
             </div>
-            
-            {/* Description Section */}
-            <div className="text-center mt-4 px-4">
-              <h3 className="text-2xl font-bold text-yellow-400">{mode.displayName}</h3>
-              <p className="mt-2 text-gray-300 text-sm leading-relaxed">{mode.description}</p>
-              <p className="mt-2 text-blue-400 font-semibold">Duration: {mode.duration || "Unknown"}</p>
-              <p className="mt-2 text-green-400">Timeouts Allowed: {mode.allowsMatchTimeouts ? "Yes" : "No"}</p>
+
+            <div className='text-center container mt-4'>
+                {error && <p className='text-danger fw-bold'>{error}</p>}
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+
+            <div className='row justify-content-center'>
+                {gameModes.map((mode) => (
+                    <div key={mode.uuid} className='col-md-4 mb-4 px-2'
+                        style={{
+                            transition: "transform 0.3s, box-shadow 0.3s",
+                            borderRadius: "15px",
+                            overflow: "hidden",
+                            background: "rgba(30, 30, 30, 0.5)",
+                            color: "#F35116FF"
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "scale(1.05)";
+                            e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.5)";
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "scale(1)";
+                            e.currentTarget.style.boxShadow = "0 5px 10px rgba(0,0,0,0.2)";
+                        }}
+                    >
+                        <img
+                            src={mode.displayIcon || li}
+                            alt={mode.displayName}
+                            className='card-img-top'
+                            style={{ height: "8rem", width: "100%", objectFit: "contain" }}
+                        />
+                        <div className='card-body text-center'>
+                            <h5
+                                className='card-title fw-bold'
+                                style={{
+                                    fontSize: "1.5rem",
+                                    textShadow: "2px 2px 5px rgba(0, 0, 0, 0.7)"
+                                }}
+                            >
+                                <p>{mode.displayName}</p>
+                                <p>{mode.description || "Stay Tuned"}</p>
+                            </h5>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </>
+    );
 }
