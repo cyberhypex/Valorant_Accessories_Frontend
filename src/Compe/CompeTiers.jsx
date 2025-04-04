@@ -1,29 +1,28 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react'
 import api from '../AxiosInstance';
-import li from '../assets/landingImage.jpg';
 
-export function GameModes() {
-    const [gameModes, setGameModes] = useState([]);
+export function CompeTiers() {
+
+    const [compe, setCompe] = useState([]);
+    const [err, setErr] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
 
-    const fetchGameModes = () => {
+    const fetchComp = () => {
         setLoading(true);
-        setError("");
+        setErr("");
 
-        api.get("/getGameModes")
+        api.get("/getCompe")
             .then((response) => {
-                if (response.data && response.data.data) {
-                    setGameModes(response.data.data);
+                if (response.data && response.data.data && response.data.data[0].tiers) {
+                    setCompe(response.data.data[0].tiers);
                 } else {
-                    console.error("Error fetching data", response);
-                    setError("Unexpected response format 😢");
+                    console.error("Unexpected response format", response);
+                    setErr("Unexpected response format 😕");
                 }
             })
             .catch((error) => {
                 console.error("Error fetching", error);
-                setError("Failed to fetch game modes, try again later 🥲");
+                setErr("Failed to fetch competitive tiers 😞");
             })
             .finally(() => {
                 setLoading(false);
@@ -34,27 +33,25 @@ export function GameModes() {
         <>
             <div className="text-center container mt-4">
                 <button
-                    onClick={fetchGameModes}
+                    onClick={fetchComp}
                     disabled={loading}
                     className="btn btn-primary mb-4"
                 >
-                    {loading ? "Loading.." : "Fetch Game Modes"}
+                    {loading ? "Loading..." : "Fetch Competitive Tiers"}
                 </button>
+
+                {err && <p className="text-danger fw-bold">{err}</p>}
             </div>
 
-            <div className='text-center container mt-4'>
-                {error && <p className='text-danger fw-bold'>{error}</p>}
-            </div>
-
-            <div className='row justify-content-center'>
-                {gameModes.map((mode) => (
-                    <div key={mode.uuid} className='col-md-4 mb-4 px-2'
+            <div className="row justify-content-center">
+                {compe.filter(tier => tier.tierName !== "Unused1" && tier.tierName !== "Unused2").map((tier, index) => (
+                    <div key={index} className='col-md-3 mb-5 px-4 py-4'
                         style={{
                             transition: "transform 0.3s, box-shadow 0.3s",
-                            borderRadius: "15px",
-                            overflow: "hidden",
+                            borderRadius: "10px",
+                            overflow: "clip",
                             background: "rgba(30, 30, 30, 0.5)",
-                            color: "#F35116FF"
+                            color: "#EA3F0BFF"
                         }}
                         onMouseEnter={(e) => {
                             e.currentTarget.style.transform = "scale(1.05)";
@@ -66,8 +63,8 @@ export function GameModes() {
                         }}
                     >
                         <img
-                            src={mode.displayIcon || li}
-                            alt={mode.displayName}
+                            src={tier.largeIcon || "https://via.placeholder.com/100"}
+                            alt={tier.tierName}
                             className='card-img-top'
                             style={{ height: "8rem", width: "100%", objectFit: "contain" }}
                         />
@@ -75,17 +72,16 @@ export function GameModes() {
                             <h5
                                 className='card-title fw-bold'
                                 style={{
-                                    fontSize: "1rem",
+                                    fontSize: "1.5rem",
                                     textShadow: "2px 2px 5px rgba(0, 0, 0, 0.7)"
                                 }}
                             >
-                                <p>{mode.displayName}</p>
-                                <p>{mode.description || "Stay Tuned"}</p>
+                                <p>{tier.tierName}</p>
                             </h5>
                         </div>
                     </div>
                 ))}
             </div>
         </>
-    );
+    )
 }

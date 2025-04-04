@@ -33,8 +33,7 @@ export function NavBar({ textColor = '#ff6666', onMenuToggle }) {
                             <li className="nav-item me-3"><a className="nav-link" href="#map" style={{ color: textColor, textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>Map</a></li>
                             <li className="nav-item me-3"><a className="nav-link" href="#weapons" style={{ color: textColor, textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>Weapons</a></li>
                             <li className="nav-item me-3"><a className="nav-link" href="#competitive" style={{ color: textColor, textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>Competitive</a></li>
-                            <li className="nav-item me-3"><a className="nav-link" href="#bundles" style={{ color: textColor, textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>Bundles</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#buddies" style={{ color: textColor, textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>Buddies</a></li>
+
                         </ul>
                     </div>
                 </div>

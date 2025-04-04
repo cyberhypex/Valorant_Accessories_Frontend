@@ -64,6 +64,7 @@ export default function Maps() {
               }}
             >
               <img
+              loading="lazy"
                 src={map.splash || "https://via.placeholder.com/600x400?text=No+Image+Available"}
                 alt={map.displayName || "Map"}
                 className="card-img-top"
