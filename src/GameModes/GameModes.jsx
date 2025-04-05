@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import api from '../AxiosInstance';
-import li from '../assets/landingImage.jpg';
+import li from '../assets/VALORANT_V_Red.jpg';
 
 export function GameModes() {
     const [gameModes, setGameModes] = useState([]);
