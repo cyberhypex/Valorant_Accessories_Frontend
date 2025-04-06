@@ -58,7 +58,7 @@ export default function Maps() {
 }
 
 function MapCard({ map }) {
-  const [imgLoaded, setImgLoaded] = useState(false);
+
 
   return (
     <div className="col-md-4 mb-4">
@@ -80,14 +80,7 @@ function MapCard({ map }) {
           e.currentTarget.style.boxShadow = "0 5px 10px rgba(0,0,0,0.2)";
         }}
       >
-        {!imgLoaded && (
-          <div
-            className="d-flex align-items-center justify-content-center"
-            style={{ height: "200px", backgroundColor: "#2c2c2c" }}
-          >
-            <div className="spinner-border text-light" role="status"></div>
-          </div>
-        )}
+        
 
         <img
           loading="lazy"
@@ -100,7 +93,7 @@ function MapCard({ map }) {
           style={{
             height: "200px",
             objectFit: "cover",
-            display: imgLoaded ? "block" : "none",
+            
           }}
           onLoad={() => setImgLoaded(true)}
         />
