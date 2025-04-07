@@ -5,6 +5,7 @@ export function Agents() {
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedAgent, setSelectedAgent] = useState(null);
 
   const fetchData = () => {
     setLoading(true);
@@ -27,18 +28,51 @@ export function Agents() {
   };
 
   return (
-    <div className="text-center container mt-4">
-      <button
-        onClick={fetchData}
-        disabled={loading}
-        className="btn btn-primary mb-4"
-      >
-        {loading ? "Loading..." : "Fetch Agents"}
-      </button>
-      
-      {error && <p className="text-danger fw-bold">{error}</p>}
-      
-      <div className="row justify-content-center">
+    <div className="text-center container p-0">
+
+      {/* Intro + Button (Hide after data is fetched) */}
+      {agents.length === 0 && (
+       <div className="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 ">
+          <h2
+            className="fw-bold"
+            style={{
+              color: "#f94f4f",
+              fontSize: "2.5rem",
+              textShadow: "2px 2px 5px rgba(0,0,0,0.6)",
+            }}
+          >
+            What are Agents?
+          </h2>
+          <p
+  className="lead text-light"
+  style={{
+    maxWidth: "700px",
+    marginTop: "0.25rem",
+    marginBottom: "2rem",
+    fontSize: "1.5rem",
+    lineHeight: "1.6",
+    textShadow: "1px 1px 3px rgba(0,0,0,0.6)",
+  }}
+>
+
+            Agents are characters in Valorant, each with unique abilities and roles like Duelist, Initiator, Controller, or Sentinel. They define your playstyle!
+          </p>
+          <button
+            onClick={fetchData}
+            disabled={loading}
+            className="btn btn-danger px-4 py-2"
+            style={{ fontSize: "1.2rem", fontWeight: "bold" }}
+          >
+            {loading ? "Loading..." : "Fetch Agents"}
+          </button>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {error && <p className="text-danger fw-bold mt-4">{error}</p>}
+
+      {/* Agent Cards */}
+      <div className="row justify-content-center mt-4">
         {agents.map((agent, index) => (
           <div key={index} className="col-md-4 mb-4">
             <div
@@ -49,7 +83,9 @@ export function Agents() {
                 transition: "transform 0.3s, box-shadow 0.3s",
                 borderRadius: "15px",
                 overflow: "hidden",
+                cursor: "pointer",
               }}
+              onClick={() => setSelectedAgent(agent)}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.05)";
                 e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.5)";
@@ -101,53 +137,83 @@ export function Agents() {
                     {agent.role ? agent.role.displayName : "Not Available"}
                   </span>
                 </p>
-
-                {agent.abilities?.length > 0 ? (
-                  <div className="mt-3">
-                    <strong
-                      style={{
-                        fontSize: "1.2rem",
-                        color: "#2ecc71",
-                        textTransform: "uppercase",
-                        textShadow: "1px 1px 3px rgba(0, 0, 0, 0.6)",
-                      }}
-                    >
-                      Abilities:
-                    </strong>
-                    <ul
-                      className="list-unstyled mt-2"
-                      style={{ fontSize: "0.95rem", lineHeight: "1.8" }}
-                    >
-                      {agent.abilities.map((ability, i) => (
-                        <li
-                          key={i}
-                          style={{
-                            textShadow: "1px 1px 4px rgba(0, 0, 0, 0.6)",
-                          }}
-                        >
-                          <span
-                            style={{ color: "#f1c40f", fontWeight: "bold" }}
-                          >
-                            {ability.displayName}:
-                          </span>{" "}
-                          {ability.description}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : (
-                  <p
-                    className="text-muted small"
-                    style={{ textShadow: "1px 1px 3px rgba(0, 0, 0, 0.4)" }}
-                  >
-                    No Abilities Available
-                  </p>
-                )}
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Modal for selected agent */}
+      {selectedAgent && (
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+          style={{
+            background: "rgba(0, 0, 0, 0.85)",
+            zIndex: 9999,
+            padding: "2rem",
+            overflowY: "auto",
+          }}
+          onClick={() => setSelectedAgent(null)}
+        >
+          <div
+            className="card p-4"
+            style={{
+              backgroundColor: "#1a1a1a",
+              borderRadius: "20px",
+              color: "#f8f9fa",
+              maxWidth: "700px",
+              width: "100%",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              position: "relative",
+              textAlign: "left",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
+              onClick={() => setSelectedAgent(null)}
+            >
+              X
+            </button>
+
+            <h2 className="text-center mb-4" style={{ color: "#ff4655" }}>
+              {selectedAgent.displayName}
+            </h2>
+
+            {selectedAgent.fullPortrait && (
+              <img
+                src={selectedAgent.fullPortrait}
+                alt={selectedAgent.displayName}
+                className="img-fluid mb-3 rounded"
+              />
+            )}
+
+            <p>
+              <strong>Role:</strong>{" "}
+              {selectedAgent.role?.displayName || "N/A"}
+            </p>
+
+            <p>
+              <strong>Agent Description:</strong>{" "}
+              {selectedAgent.description || "No description available."}
+            </p>
+
+            {selectedAgent.abilities && (
+              <>
+                <h5 className="mt-3">Abilities</h5>
+                <ul>
+                  {selectedAgent.abilities.map((ab, i) => (
+                    <li key={i}>
+                      <strong>{ab.displayName}:</strong> {ab.description}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

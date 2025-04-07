@@ -12,18 +12,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-body {
-  background: url('./assets/landingImage.jpg') no-repeat center center fixed;
-  background-size: cover;
-  background-color: rgba(0, 0, 0, 0.5); /* Adds dark overlay instead of reducing opacity */
-}
+
 
 .landing-page {
   background: none;
 }
 /* Game-themed navbar styles */
 .navbar {
-  font-family: 'Orbitron', sans-serif; /* Futuristic gaming font */
+  font-family: 'Orbitron', sans-serif; 
+  /* Futuristic gaming font */
+ 
 }
 
 .nav-link {

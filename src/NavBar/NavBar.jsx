@@ -126,7 +126,7 @@ export function NavBar({ textColor = '#ff6666', onMenuToggle }) {
       onMouseEnter={(e) => (e.target.style.color = 'white')}
       onMouseLeave={(e) => (e.target.style.color = textColor)}
     >
-      Competitive
+      Competitive Tier
     </Link>
   </li>
 </ul>
