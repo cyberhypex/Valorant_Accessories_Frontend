@@ -28,7 +28,7 @@ export function Agents() {
   };
 
   return (
-    <div className="text-center container p-0">
+    <div className="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 px-3">
 
       {/* Intro + Button (Hide after data is fetched) */}
       {agents.length === 0 && (

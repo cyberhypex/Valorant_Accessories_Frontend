@@ -24,6 +24,7 @@
  
 }
 
+
 .nav-link {
   font-weight: bold;
   font-size: 1.3rem;
@@ -67,6 +68,9 @@
   box-shadow: none !important;
 }
 
+.navbar {
+  z-index: 1030; /* Bootstrap's default for fixed navbars */
+}
 
 
 
@@ -85,6 +89,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  padding-top: 70px;
 }
 
 h1 {
