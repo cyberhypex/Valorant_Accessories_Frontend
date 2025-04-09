@@ -29,10 +29,8 @@ export function Agents() {
 
   return (
     <div className="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 px-3">
-
-      {/* Intro + Button (Hide after data is fetched) */}
       {agents.length === 0 && (
-       <div className="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 ">
+        <div className="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 ">
           <h2
             className="fw-bold"
             style={{
@@ -44,18 +42,19 @@ export function Agents() {
             What are Agents?
           </h2>
           <p
-  className="lead text-light"
-  style={{
-    maxWidth: "700px",
-    marginTop: "0.25rem",
-    marginBottom: "2rem",
-    fontSize: "1.5rem",
-    lineHeight: "1.6",
-    textShadow: "1px 1px 3px rgba(0,0,0,0.6)",
-  }}
->
-
-            Agents are characters in Valorant, each with unique abilities and roles like Duelist, Initiator, Controller, or Sentinel. They define your playstyle!
+            className="lead text-light"
+            style={{
+              maxWidth: "700px",
+              marginTop: "0.25rem",
+              marginBottom: "2rem",
+              fontSize: "1.5rem",
+              lineHeight: "1.6",
+              textShadow: "1px 1px 3px rgba(0,0,0,0.6)",
+            }}
+          >
+            Agents are characters in Valorant, each with unique abilities and
+            roles like Duelist, Initiator, Controller, or Sentinel. They define
+            your playstyle!
           </p>
           <button
             onClick={fetchData}
@@ -68,10 +67,8 @@ export function Agents() {
         </div>
       )}
 
-      {/* Error Message */}
       {error && <p className="text-danger fw-bold mt-4">{error}</p>}
 
-      {/* Agent Cards */}
       <div className="row justify-content-center mt-4">
         {agents.map((agent, index) => (
           <div key={index} className="col-md-4 mb-4">
@@ -88,11 +85,13 @@ export function Agents() {
               onClick={() => setSelectedAgent(agent)}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.05)";
-                e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.5)";
+                e.currentTarget.style.boxShadow =
+                  "0 10px 20px rgba(0,0,0,0.5)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "0 5px 10px rgba(0,0,0,0.2)";
+                e.currentTarget.style.boxShadow =
+                  "0 5px 10px rgba(0,0,0,0.2)";
               }}
             >
               <div className="card-body text-center">
@@ -143,14 +142,16 @@ export function Agents() {
         ))}
       </div>
 
-      {/* Modal for selected agent */}
       {selectedAgent && (
         <div
-          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-start"
           style={{
             background: "rgba(0, 0, 0, 0.85)",
             zIndex: 9999,
-            padding: "2rem",
+            paddingTop: "6rem",
+            paddingLeft: "2rem",
+            paddingRight: "2rem",
+            paddingBottom: "2rem",
             overflowY: "auto",
           }}
           onClick={() => setSelectedAgent(null)}

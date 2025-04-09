@@ -16,7 +16,13 @@ export function LandingPage() {
                 src={li} 
                 alt="Valo Image" 
                 className="img-fluid position-fixed top-0 start-0 object-fit-cover" 
-                style={{ zIndex: -1, height: '100vh', width: '100vw', filter: 'brightness(25%)' }}
+                style={{ 
+                    zIndex: -1, 
+                    height: '100vh', 
+                    width: '100vw', 
+                    filter: 'brightness(25%)', 
+                    objectFit: 'cover' 
+                }}
             />
 
             {/* Navbar */}
@@ -45,6 +51,40 @@ export function LandingPage() {
                     <p className="lead" style={{ maxWidth: '700px', fontSize: '1.4rem' }}>
                         Dive into the world of Valorant. Discover agents, master maps, explore weapons and conquer every mode — all at your fingertips.
                     </p>
+
+                    {/* Extra content below */}
+                    <div style={{ fontFamily: "'Orbitron', sans-serif", marginTop: '30px', fontSize: '1rem' }}>
+                        <p>
+                            Created with ❤️ by{' '}
+                            <a 
+                                href="https://www.linkedin.com/in/anshuman-gogoi-b99671211/" 
+                                target="_blank" 
+                                rel="noreferrer" 
+                                style={{ 
+                                    color: '#0a66c2', 
+                                    fontWeight: 'bold', 
+                                    textDecoration: 'none' 
+                                }}
+                            >
+                                Anshuman Gogoi
+                            </a>
+                        </p>
+                        <p>
+                            Lots of love and thanks to{' '}
+                            <a 
+                                href="https://playvalorant.com/en-us/" 
+                                target="_blank" 
+                                rel="noreferrer" 
+                                style={{ 
+                                    color: '#ff4655', 
+                                    fontWeight: 'bold', 
+                                    textDecoration: 'none' 
+                                }}
+                            >
+                                Valorant
+                            </a>
+                        </p>
+                    </div>
                 </div>
             )}
 

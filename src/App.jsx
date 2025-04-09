@@ -9,12 +9,16 @@ import { Weapons } from "./Weapons/Weapons";
 import { GameModes } from "./GameModes/GameModes";
 import { CompeTiers } from "./Compe/CompeTiers";
 
+
+
 export default function App() {
   return (
     <Router>
+      
       <Routes>
         {/* Landing page for just "/" */}
         <Route path="/" element={<LandingPage />} />
+      
 
         {/* Layout for other pages */}
         <Route element={<PageLayout />}>
@@ -23,9 +27,13 @@ export default function App() {
           <Route path="/weapons" element={<Weapons />} />
           <Route path="/gamemodes" element={<GameModes />} />
           <Route path="/competetiers" element={<CompeTiers />} />
+          
         </Route>
+        
       
       </Routes>
     </Router>
+    
+    
   );
 }
