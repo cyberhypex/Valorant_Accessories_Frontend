@@ -5,6 +5,7 @@ export default function Maps() {
   const [maps, setMaps] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedMap, setSelectedMap] = useState(null);
 
   const fetchMaps = () => {
     setLoading(true);
@@ -31,15 +32,50 @@ export default function Maps() {
       })
       .catch((error) => {
         console.error("Error fetching data", error);
-        setError("Failed to fetch maps. Please try again later 😢");
+        setError(
+          "We're sorry! Something went wrong while fetching maps. Please check your internet connection or try again later 😢"
+        );
       })
       .finally(() => setLoading(false));
   };
 
   return (
-    <div div className="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 px-3">
-      {maps.length === 0 && (
-        <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center">
+    <div className="container-fluid d-flex flex-column justify-content-center align-items-center text-center min-vh-100 px-3">
+      {error ? (
+        <>
+          <h2
+            className="fw-bold"
+            style={{
+              color: "#ff6b6b",
+              fontSize: "2.5rem",
+              textShadow: "2px 2px 5px rgba(0,0,0,0.6)",
+            }}
+          >
+            Oops! Something went wrong.
+          </h2>
+          <p
+            className="lead text-light"
+            style={{
+              maxWidth: "700px",
+              marginTop: "1rem",
+              fontSize: "1.3rem",
+              lineHeight: "1.6",
+              color: "#f1f1f1",
+            }}
+          >
+            {error}
+          </p>
+          <button
+            onClick={fetchMaps}
+            disabled={loading}
+            className="btn btn-danger px-4 py-2 mt-4"
+            style={{ fontSize: "1.2rem", fontWeight: "bold" }}
+          >
+            {loading ? "Retrying..." : "Try Again"}
+          </button>
+        </>
+      ) : maps.length === 0 ? (
+        <>
           <h2
             className="fw-bold"
             style={{
@@ -61,7 +97,8 @@ export default function Maps() {
               textShadow: "1px 1px 3px rgba(0,0,0,0.6)",
             }}
           >
-            Valorant maps are strategic battlegrounds with unique layouts, callouts, and design styles that challenge your gameplay.
+            Valorant maps are strategic battlegrounds with unique layouts,
+            callouts, and design styles that challenge your gameplay.
           </p>
           <button
             onClick={fetchMaps}
@@ -71,23 +108,83 @@ export default function Maps() {
           >
             {loading ? "Loading..." : "Fetch Maps"}
           </button>
-        </div>
-      )}
-
-      {error && <p className="text-danger fw-bold mt-4">{error}</p>}
-
-      <div className="row justify-content-center mt-4">
-        {maps.map((map) => (
-          <div key={map.uuid} className="col-md-4 mb-4">
-            <MapCard map={map} />
+        </>
+      ) : (
+        <>
+          <div className="row justify-content-center mt-4">
+            {maps.map((map) => (
+              <div key={map.uuid} className="col-md-4 mb-4">
+                <MapCard map={map} onClick={() => setSelectedMap(map)} />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+
+          {selectedMap && (
+            <div
+              className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-start"
+              style={{
+                background: "rgba(0, 0, 0, 0.85)",
+                zIndex: 9999,
+                paddingTop: "6rem",
+                paddingLeft: "2rem",
+                paddingRight: "2rem",
+                paddingBottom: "2rem",
+                overflowY: "auto",
+              }}
+              onClick={() => setSelectedMap(null)}
+            >
+              <div
+                className="card p-4"
+                style={{
+                  backgroundColor: "#1a1a1a",
+                  borderRadius: "20px",
+                  color: "#f8f9fa",
+                  maxWidth: "800px",
+                  width: "100%",
+                  position: "relative",
+                  textAlign: "left",
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  className="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
+                  onClick={() => setSelectedMap(null)}
+                >
+                  X
+                </button>
+
+                <h2 className="text-center mb-4" style={{ color: "#ff4655" }}>
+                  {selectedMap.displayName}
+                </h2>
+
+                {selectedMap.splash && (
+                  <img
+                    src={selectedMap.splash}
+                    alt={selectedMap.displayName}
+                    className="img-fluid mb-3 rounded"
+                  />
+                )}
+
+                <p>
+                  <strong>Coordinates:</strong>{" "}
+                  {selectedMap.coordinates || "Unknown"}
+                </p>
+
+                <p>
+                  <strong>Map Description:</strong>{" "}
+                  {selectedMap.narrativeDescription ||
+                    "No description available."}
+                </p>
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
 
-function MapCard({ map }) {
+function MapCard({ map, onClick }) {
   return (
     <div
       className="card shadow-lg border-0 h-100"
@@ -99,6 +196,7 @@ function MapCard({ map }) {
         overflow: "hidden",
         cursor: "pointer",
       }}
+      onClick={onClick}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "scale(1.05)";
         e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.5)";
