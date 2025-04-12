@@ -85,7 +85,7 @@ export function NavBar({ textColor = '#ff6666', onMenuToggle }) {
                             className="navbar-nav mx-auto text-center"
                             style={{
                                 fontWeight: 'bold',
-                                fontFamily: 'Comic Sans MS, cursive, sans-serif',
+                                
                                 gap: '20px',
                                 backgroundColor: isOpen ? 'black' : 'transparent',
                                 padding: isOpen ? '1rem' : '0',
