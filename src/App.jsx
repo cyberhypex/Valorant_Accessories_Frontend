@@ -12,6 +12,22 @@ import { CompeTiers } from "./Compe/CompeTiers";
 
 
 export default function App() {
+  useEffect(() => {
+    // Using requestAnimationFrame to ensure React mount is complete
+    const handleLoad = () => {
+      // Small delay to show the loader
+      setTimeout(() => setIsLoading(false), 800);
+    };
+
+    if (document.readyState === "complete") {
+      handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad);
+      return () => window.removeEventListener("load", handleLoad);
+    }
+  }, []);
+
+  if (isLoading) return <Loader />;
   return (
     <Router>
       

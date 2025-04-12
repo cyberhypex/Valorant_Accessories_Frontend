@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import li from './assets/landingImage.jpg';
 import { NavBar } from './NavBar/NavBar';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 export function LandingPage() {
     const location = useLocation();
 
-    // Show the welcome content only on the root route "/"
+   
+    useEffect(() => {
+        const loader = document.getElementById("global-loader");
+        if (loader) {
+            loader.style.transition = "opacity 0.3s ease";
+            loader.style.opacity = "0";
+            setTimeout(() => loader.remove(), 300); // Remove loader after fade-out
+        }
+    }, []); // Empty dependency array ensures it runs only once when the component mounts
+
+    // Show welcome content only on the root route "/"
     const isHome = location.pathname === '/';
 
     return (

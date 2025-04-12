@@ -173,7 +173,7 @@ export default function Maps() {
                 <p>
                   <strong>Map Description:</strong>{" "}
                   {selectedMap.narrativeDescription ||
-                    "No description available."}
+                    "Coming Soon!!."}
                 </p>
               </div>
             </div>
