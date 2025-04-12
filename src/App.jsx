@@ -8,6 +8,7 @@ import Maps from "./Map/MapComponent";
 import { Weapons } from "./Weapons/Weapons";
 import { GameModes } from "./GameModes/GameModes";
 import { CompeTiers } from "./Compe/CompeTiers";
+import { Analytics } from "@vercel/analytics/react";
 
 
 
@@ -48,6 +49,7 @@ export default function App() {
         
       
       </Routes>
+      <Analytics />
     </Router>
     
     
